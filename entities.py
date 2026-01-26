@@ -1,8 +1,6 @@
-import math
 from dataclasses import dataclass, field
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional, Tuple, List
 from constants import EntityType, WHITE
-
 
 @dataclass
 class Stats:
@@ -13,7 +11,6 @@ class Stats:
     speed: int = 10
     vision_range: int = 8
 
-
 @dataclass
 class Resources:
     atp: int = 100
@@ -22,7 +19,6 @@ class Resources:
     max_atp: int = 100
     max_protein: int = 100
     max_rna: int = 50
-
 
 @dataclass
 class Entity:
@@ -49,11 +45,10 @@ class Entity:
         self.stats.hp = min(self.stats.max_hp, self.stats.hp + amount)
 
     def distance_to(self, other: 'Entity') -> float:
-        return math.sqrt((self.x - other.x)**2 + (self.y - other.y)**2)
+        return ((self.x - other.x) ** 2 + (self.y - other.y) ** 2) ** 0.5
 
     def distance_to_pos(self, x: int, y: int) -> float:
-        return math.sqrt((self.x - x)**2 + (self.y - y)**2)
-
+        return ((self.x - x) ** 2 + (self.y - y) ** 2) ** 0.5
 
 class Mutation:
     def __init__(self, name: str, description: str, stat_changes: Dict[str, int]):
@@ -70,8 +65,6 @@ class Mutation:
                 current = getattr(resources, stat)
                 setattr(resources, stat, current + value)
 
-
-# Возможные мутации
 MUTATIONS = [
     Mutation("Усиленная оболочка", "+20 макс. HP", {"max_hp": 20, "hp": 20}),
     Mutation("Острые шипы", "+5 атака", {"attack": 5}),

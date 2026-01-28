@@ -276,9 +276,9 @@ class Game:
         turn_taken = False
 
         if key == arcade.key.UP or key == arcade.key.W:
-            dy = -1
+            dy = 1  # Было "-1", теперь "1" (персонаж движется вверх)
         elif key == arcade.key.DOWN or key == arcade.key.S:
-            dy = 1
+            dy = -1  # Было "1", теперь "-1" (персонаж движется вниз)
         elif key == arcade.key.LEFT or key == arcade.key.A:
             dx = -1
         elif key == arcade.key.RIGHT or key == arcade.key.D:

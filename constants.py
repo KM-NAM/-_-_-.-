@@ -1,38 +1,14 @@
+# constants.py
 from enum import Enum
-import os
 
-# Настройка окна
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 TILE_SIZE = 32
 FPS = 60
-UI_PANEL_HEIGHT = 150  # Высота панели UI
 
-# Настройка карты
 MAP_WIDTH = 60
 MAP_HEIGHT = 40
 
-# Пути к текстурам
-TEXTURE_DIR = "textures"
-TILE_TEXTURES = {
-    "wall": f"{TEXTURE_DIR}/tiles/wall.png",
-    "floor": f"{TEXTURE_DIR}/tiles/floor.png",
-    "blood_vessel": f"{TEXTURE_DIR}/tiles/blood_vessel.png",
-    "exit": f"{TEXTURE_DIR}/tiles/exit.png",
-}
-
-ENTITY_TEXTURES = {
-    "player": f"{TEXTURE_DIR}/entities/virus.png",
-    "virus_clone": f"{TEXTURE_DIR}/entities/virus_clone.png",
-    "macrophage": f"{TEXTURE_DIR}/entities/macrophage.png",
-    "neutrophil": f"{TEXTURE_DIR}/entities/neutrophil.png",
-    "b_cell": f"{TEXTURE_DIR}/entities/b_cell.png",
-    "t_cell": f"{TEXTURE_DIR}/entities/t_cell.png",
-    "dendritic": f"{TEXTURE_DIR}/entities/dendritic.png",
-    "mast_cell": f"{TEXTURE_DIR}/entities/mast_cell.png",
-}
-
-# Цвета
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (220, 50, 50)
@@ -49,13 +25,12 @@ DARK_GRAY = (40, 40, 40)
 LIGHT_GRAY = (180, 180, 180)
 PINK = (220, 100, 150)
 
-
 class TileType(Enum):
     WALL = 0
     FLOOR = 1
     BLOOD_VESSEL = 2
-    EXIT = 3
-
+    MEMBRANE = 3
+    EXIT = 4
 
 class EntityType(Enum):
     PLAYER = 0
@@ -66,7 +41,6 @@ class EntityType(Enum):
     DENDRITIC = 5
     MAST_CELL = 6
     VIRUS_CLONE = 7
-
 
 class GameState(Enum):
     MAIN_MENU = 0
@@ -79,8 +53,6 @@ class GameState(Enum):
     PAUSED = 7
     GUIDE = 8
 
-
-# Названия уровней
 LEVEL_NAMES = {
     1: "Кровеносная система - Вход",
     2: "Кровеносная система - Артерии",

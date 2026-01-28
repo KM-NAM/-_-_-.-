@@ -327,6 +327,8 @@ class Game:
             # Перемещение
             self.player.x = new_x
             self.player.y = new_y
+            if self.resources.atp == 0:
+                self.player.take_damage(1)
             self.resources.atp = max(0, self.resources.atp - 1)
 
             # Сбор ресурсов на кровяных сосудах
@@ -355,7 +357,7 @@ class Game:
             self.resources.atp = max(0, self.resources.atp - 2)
 
             if not defender.is_alive:
-                self.on_enemy_killed(defender)
+                self.on_enemy_killed(defender, attacker)
         else:
             if defender == self.player:
                 self.message_log.add(f"{attacker.name} атакует: -{actual_damage} HP", RED)
@@ -364,8 +366,9 @@ class Game:
 
         return True
 
-    def on_enemy_killed(self, enemy: Entity):
+    def on_enemy_killed(self, enemy: Entity, attacker: Entity):
         self.message_log.add(f"{enemy.name} уничтожен!", GREEN)
+        attacker.heal(random.randint(2,5))
 
         # Получение ресурсов
         protein_gain = random.randint(12, 18)
@@ -631,4 +634,3 @@ class Game:
     def update(self):
         if self.state == GameState.ENEMY_TURN:
             self.process_enemy_turn()
-

@@ -36,7 +36,7 @@ class Game:
         self.player = Entity(
             x=0, y=0,
             entity_type=EntityType.PLAYER,
-            stats=Stats(hp=100, max_hp=100, attack=12, defense=5, speed=10, vision_range=8),
+            stats=Stats(hp=100, max_hp=100, attack=15, defense=5, speed=10, vision_range=8),
             name="Вирус",
             color=GREEN,
             char="V"
@@ -148,7 +148,7 @@ class Game:
                     hp=80 + level_bonus * 10,
                     max_hp=80 + level_bonus * 10,
                     attack=8 + level_bonus,
-                    defense=8 + level_bonus,
+                    defense=7 + level_bonus,
                     speed=3,
                     vision_range=5
                 ),
@@ -160,7 +160,7 @@ class Game:
                 "stats": Stats(
                     hp=40 + level_bonus * 5,
                     max_hp=40 + level_bonus * 5,
-                    attack=12 + level_bonus,
+                    attack=9 + level_bonus,
                     defense=3 + level_bonus // 2,
                     speed=12,
                     vision_range=6
@@ -171,9 +171,9 @@ class Game:
             },
             EntityType.B_CELL: {
                 "stats": Stats(
-                    hp=35 + level_bonus * 4,
-                    max_hp=35 + level_bonus * 4,
-                    attack=15 + level_bonus,
+                    hp=30 + level_bonus * 4,
+                    max_hp=30 + level_bonus * 4,
+                    attack=12 + level_bonus,
                     defense=2 + level_bonus // 2,
                     speed=6,
                     vision_range=8
@@ -368,7 +368,7 @@ class Game:
         self.message_log.add(f"{enemy.name} уничтожен!", GREEN)
 
         # Получение ресурсов
-        protein_gain = random.randint(8, 18)
+        protein_gain = random.randint(12, 18)
         rna_gain = random.randint(2, 6)
 
         self.resources.protein = min(self.resources.max_protein, self.resources.protein + protein_gain)
@@ -387,8 +387,8 @@ class Game:
         self.message_log.add("ЭВОЛЮЦИЯ! Выберите мутацию (1-3)", YELLOW)
 
     def create_clone(self) -> bool:
-        if self.resources.protein < 30:
-            self.message_log.add("Нужно 30 белка для клона", RED)
+        if self.resources.protein < 25:
+            self.message_log.add("Нужно 25 белка для клона", RED)
             return False
 
         # Поиск свободного соседнего места
@@ -401,8 +401,8 @@ class Game:
                     stats=Stats(
                         hp=self.player.stats.max_hp // 2,
                         max_hp=self.player.stats.max_hp // 2,
-                        attack=self.player.stats.attack - 2,
-                        defense=self.player.stats.defense - 2,
+                        attack=self.player.stats.attack - 1,
+                        defense=self.player.stats.defense - 1,
                         speed=self.player.stats.speed,
                         vision_range=4
                     ),
@@ -412,7 +412,7 @@ class Game:
                 )
                 self.virus_clones.append(clone)
                 self.entities.append(clone)
-                self.resources.protein -= 30
+                self.resources.protein -= 25
                 self.message_log.add("Клон создан!", GREEN)
                 return True
 
@@ -479,7 +479,7 @@ class Game:
         self.turn_count += 1
 
         # Пополнение энергии пассивно
-        self.resources.atp = min(self.resources.max_atp, self.resources.atp + 2)
+        self.resources.atp = min(self.resources.max_atp, self.resources.atp)
 
         self.state = GameState.PLAYER_TURN
 
@@ -612,7 +612,7 @@ class Game:
             self.get_enemies_count()
         )
 
-        # Полная карта сверху справа
+        # Полная карта снизу справа
         self.ui.render_fullmap(
             self.game_map, self.player, self.entities,
             SCREEN_WIDTH - 210, 10, 200, 150
@@ -631,3 +631,4 @@ class Game:
     def update(self):
         if self.state == GameState.ENEMY_TURN:
             self.process_enemy_turn()
+

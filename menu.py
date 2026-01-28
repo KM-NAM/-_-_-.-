@@ -45,24 +45,17 @@ class Menu:
 
     # Функция отвечающая за отрисовку меню
     def render_main_menu(self):
-        self.screen.clear((15, 10, 15))
-        # Границы меню
-        arcade.draw_lbwh_rectangle_filled(SCREEN_WIDTH // 2 - (SCREEN_WIDTH - 100) // 2,
-                                          SCREEN_HEIGHT // 2 - (SCREEN_HEIGHT - 100) // 2, SCREEN_WIDTH - 100,
-                                          SCREEN_HEIGHT - 100, (20, 15, 20))
-        # Рамка меню
-        arcade.draw_lbwh_rectangle_outline(SCREEN_WIDTH // 2 - (SCREEN_WIDTH - 100) // 2,
-                                           SCREEN_HEIGHT // 2 - (SCREEN_HEIGHT - 100) // 2, SCREEN_WIDTH - 100,
-                                           SCREEN_HEIGHT - 100, GRAY, 1)
+        self.background = arcade.load_texture("background1.png")
+        arcade.draw_texture_rect(self.background, arcade.LBWH(0, 0, 1280, 720))
         # Титульный текст
-        arcade.draw_text("L.A.T.E.N.D", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200, GREEN, font_size=96,
+        arcade.draw_text("L.A.T.E.N.D", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 270, GREEN, font_size=96,
                          anchor_x="center", anchor_y="center", font_name=self.title_font)
         for index, item in enumerate(reversed(self.menu_items)):
             y = SCREEN_HEIGHT // 2 + (index - 1) * 60
             selected = (len(self.menu_items) - 1 - index) == self.selected_item
             color = GREEN if selected else GRAY
             text = f"> {item}" if selected else f"  {item}"
-            arcade.draw_text(text, SCREEN_WIDTH // 2, y, color, font_size=32, anchor_x="center", anchor_y="center",
+            arcade.draw_text(text, SCREEN_WIDTH // 6.5, y - 250, color, font_size=32, anchor_x="center", anchor_y="center",
                              font_name=self.font)
         arcade.draw_text("v1.0", SCREEN_WIDTH - 100, 60, (50, 50, 50), font_size=20, anchor_x="right",
                          anchor_y="bottom", font_name=self.small_font)
@@ -153,4 +146,5 @@ class Menu:
         arcade.draw_text("ESC или ENTER - возврат | W/S - прокрутка",
                          SCREEN_WIDTH // 2, 80, GRAY, font_size=14,
                          anchor_x="center", anchor_y="bottom", font_name=self.small_font)
+
 

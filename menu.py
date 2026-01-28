@@ -43,8 +43,9 @@ class Menu:
             self.guide_scroll = min(800, self.guide_scroll + 30)
         return False
 
+    # Функция отвечающая за отрисовку меню
     def render_main_menu(self):
-        self.screen.clear((15, 10, 15))  # Темный фон
+        self.screen.clear((15, 10, 15))
         # Границы меню
         arcade.draw_lbwh_rectangle_filled(SCREEN_WIDTH // 2 - (SCREEN_WIDTH - 100) // 2,
                                           SCREEN_HEIGHT // 2 - (SCREEN_HEIGHT - 100) // 2, SCREEN_WIDTH - 100,
@@ -152,3 +153,4 @@ class Menu:
         arcade.draw_text("ESC или ENTER - возврат | W/S - прокрутка",
                          SCREEN_WIDTH // 2, 80, GRAY, font_size=14,
                          anchor_x="center", anchor_y="bottom", font_name=self.small_font)
+

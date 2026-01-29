@@ -36,7 +36,7 @@ class Game:
         self.player = Entity(
             x=0, y=0,
             entity_type=EntityType.PLAYER,
-            stats=Stats(hp=100, max_hp=100, attack=15, defense=5, speed=10, vision_range=8),
+            stats=Stats(hp=10000, max_hp=10000, attack=15, defense=5, speed=10, vision_range=8),
             name="Вирус",
             color=GREEN,
             char="V"
@@ -368,7 +368,8 @@ class Game:
 
     def on_enemy_killed(self, enemy: Entity, attacker: Entity):
         self.message_log.add(f"{enemy.name} уничтожен!", GREEN)
-        attacker.heal(random.randint(2,5))
+        hp_gain = random.randint(2,5)
+        attacker.heal(hp_gain)
 
         # Получение ресурсов
         protein_gain = random.randint(12, 18)
@@ -377,7 +378,7 @@ class Game:
         self.resources.protein = min(self.resources.max_protein, self.resources.protein + protein_gain)
         self.resources.rna = min(self.resources.max_rna, self.resources.rna + rna_gain)
 
-        self.message_log.add(f"+{protein_gain} белка, +{rna_gain} РНК", CYAN)
+        self.message_log.add(f"+{protein_gain} белка, +{rna_gain} РНК, +{hp_gain} HP", CYAN)
 
         # Проверка на эволюцию
         if self.resources.rna >= 20:
@@ -634,3 +635,4 @@ class Game:
     def update(self):
         if self.state == GameState.ENEMY_TURN:
             self.process_enemy_turn()
+

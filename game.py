@@ -245,6 +245,12 @@ class Game:
         self.camera_y = max(0, min(self.camera_y, self.game_map.height - view_height))
 
     def handle_input(self, key: int) -> str:
+        if key == arcade.key.L:
+            self.load_game_from_csv()
+            return ""
+        if key == arcade.key.K:
+            self.save_game_to_csv()
+            return ""
         if self.state == GameState.GAME_OVER or self.state == GameState.VICTORY:
             if key == arcade.key.R:
                 self.init_new_game()
@@ -636,3 +642,49 @@ class Game:
         if self.state == GameState.ENEMY_TURN:
             self.process_enemy_turn()
 
+    def save_game_to_csv(self):
+        import csv
+        try:
+            with open('save_game.csv', 'w', newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                # Meta
+                writer.writerow(['META', 'level', self.current_level])
+                writer.writerow(['META', 'turn', self.turn_count])
+                # Player
+                writer.writerow(['PLAYER', 'hp', self.player.stats.hp])
+                writer.writerow(['PLAYER', 'max_hp', self.player.stats.max_hp])
+                writer.writerow(['PLAYER', 'atp', self.resources.atp])
+                writer.writerow(['PLAYER', 'protein', self.resources.protein])
+                writer.writerow(['PLAYER', 'rna', self.resources.rna])
+                writer.writerow(['PLAYER', 'x', self.player.x])
+                writer.writerow(['PLAYER', 'y', self.player.y])
+            self.message_log.add("Игра сохранена в save_game.csv (K)", GREEN)
+        except Exception as e:
+            self.message_log.add(f"Ошибка сохранения: {e}", RED)
+
+    def load_game_from_csv(self):
+        import csv
+        import os
+        if not os.path.exists('save_game.csv'):
+            self.message_log.add("Файл сохранения не найден", RED)
+            return
+        try:
+            with open('save_game.csv', 'r', encoding='utf-8') as f:
+                reader = csv.reader(f)
+                for row in reader:
+                    if not row: continue
+                    if row[0] == 'META':
+                        if row[1] == 'level': self.current_level = int(row[2])
+                        if row[1] == 'turn': self.turn_count = int(row[2])
+                    elif row[0] == 'PLAYER':
+                        if row[1] == 'hp': self.player.stats.hp = int(row[2])
+                        if row[1] == 'max_hp': self.player.stats.max_hp = int(row[2])
+                        if row[1] == 'atp': self.resources.atp = int(row[2])
+                        if row[1] == 'protein': self.resources.protein = int(row[2])
+                        if row[1] == 'rna': self.resources.rna = int(row[2])
+                        if row[1] == 'x': self.player.x = int(row[2])
+                        if row[1] == 'y': self.player.y = int(row[2])
+            self.generate_level() # Re-generate map for the level but keep player stats
+            self.message_log.add("Игра загружена! (L)", GREEN)
+        except Exception as e:
+            self.message_log.add(f"Ошибка загрузки: {e}", RED)
